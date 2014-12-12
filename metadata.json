@@ -8,7 +8,9 @@
   "project_page": "https://github.com/kemra102/puppet-gitlab",
   "issues_url": "https://github.com/kemra102/puppet-gitlab/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    { "name":"puppetlabs-stdlib","version_requirement":">= 1.0.0" },
+    { "name":"maestrodev-rvm","version_requirement":">= 1.0.0" },
+    { "name":"puppetlabs-mysql","version_requirement":">= 2.0.0" }
   ]
 }
 
