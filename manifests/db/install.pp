@@ -5,21 +5,34 @@ class gitlab::db::install (
 
 ) inherits gitlab::params {
 
-  include '::mysql::server'
-
   class { '::mysql::server':
-    root_password           => "$db_root_password",
+    root_password           => "${db_root_password}",
     remove_default_accounts => true,
+    override_options        => {
+      'mysqld' => {
+        'default-storage-engine' => 'InnoDB',
+      },
+    }
     users                   => {
       'git@localhost' => {
         ensure        => 'present',
-        password_hash => "$db_git_password",
+        password_hash => "${db_git_password}",
       },
     }
     grants                  => {
       'git@localhost/gitlabhq_production.*' => {
-        ensure  => present,
-        options => ['GRANT'],
+        ensure     => 'present',
+        options    => ['GRANT'],
+        privileges => [ 'SELECT', 'LOCK TABLES', 'INSERT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'INDEX', 'ALTER' ],
+        table      => 'gitlabhq_production.*',
+        user       => 'git@localhost',
+      },
+    }
+    databases               => {
+      'gitlabhq_production' => {
+        ensure  => 'present',
+        charset => 'utf8',
+        collate => 'utf8_unicode_ci',
       },
     }
   }

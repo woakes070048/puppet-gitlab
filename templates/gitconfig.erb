@@ -1,3 +1,5 @@
 [User]
     name = GitLab
-    email = gitlab@<%= @::fqdn %>
+    email = <%= @gitlab_email %>
+[core]
+    autocrlf = input

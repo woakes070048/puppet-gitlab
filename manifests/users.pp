@@ -1,7 +1,7 @@
 class gitlab::users {
 
   user { 'git':
-    ensure     => present,
+    ensure     => 'present',
     comment    => 'GitLab',
     system     => true,
     managehome => true,
@@ -11,25 +11,25 @@ class gitlab::users {
   exec { '/usr/bin/ssh-keygen -q -N "" -t rsa -f /home/git/.ssh/id_rsa':
     user      => 'git',
     creates   => '/home/git/.ssh/id_rsa',
-    require   => User['git'],
     logoutput => on_failure,
+    require   => User['git'],
   }
   file { '/home/git/.gitconfig':
-    ensure  => file,
+    ensure  => 'file',
     owner   => 'git',
     group   => 'git',
     content => template('gitlab/gitconfig.erb'),
     require => User['git'],
   }
   file { '/home/git':
-    ensure  => directory,
+    ensure  => 'directory',
     owner   => 'git',
     group   => 'git',
     mode    => '0755',
     require => User['git'],
   }
   file { '/etc/sudoers.d/gitlab':
-    ensure => file,
+    ensure => 'file',
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
